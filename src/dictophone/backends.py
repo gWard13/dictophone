@@ -127,6 +127,32 @@ def diarize(audio, duration_ms: int, cfg: dict, threads: int) -> list[Turn]:
         gc.collect()
 
 
+def refine_short_turns(audio, turns: list[Turn], cfg: dict, threads: int):
+    import numpy as np
+    import sherpa_onnx as so
+    from .refinement import refine_labels
+
+    path = require_file(cfg.get("refinement_embedding_model", cfg["embedding_model"]))
+    extractor = so.SpeakerEmbeddingExtractor(so.SpeakerEmbeddingExtractorConfig(
+        model=str(path), num_threads=threads, provider="cpu"))
+    vectors = []
+    try:
+        for turn in turns:
+            stream = extractor.create_stream()
+            stream.accept_waveform(sample_rate=SAMPLE_RATE, waveform=audio[turn.start_ms*16:turn.end_ms*16])
+            stream.input_finished()
+            vector = np.asarray(extractor.compute(stream)) if extractor.is_ready(stream) else None
+            vectors.append(vector)
+        return refine_labels(turns, vectors,
+                             max_duration_ms=cfg.get("short_turn_max_ms", 3000),
+                             min_reference_ms=cfg.get("short_turn_reference_ms", 3500),
+                             min_similarity=cfg.get("short_turn_min_similarity", 0.6),
+                             min_margin=cfg.get("short_turn_min_margin", 0.15))
+    finally:
+        del extractor
+        gc.collect()
+
+
 class LocalLLM:
     def __init__(self, cfg: dict, threads: int):
         from llama_cpp import Llama

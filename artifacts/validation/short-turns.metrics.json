@@ -1,0 +1,19 @@
+{
+  "duration_ms": 60000,
+  "processing_seconds": 56.936958800000866,
+  "rtf": 0.9489493133333478,
+  "stage_seconds": {
+    "decode": 0.25417490000108955,
+    "diarization": 13.709706800000276,
+    "asr": 19.356330499998876,
+    "llm": 23.59665809999933
+  },
+  "utterances": 7,
+  "speech_detected": true,
+  "llm_accepted_utterances": 5,
+  "warnings": [
+    "llm_rejected_or_failed:utterance_2",
+    "llm_rejected_or_failed:utterance_6"
+  ],
+  "short_turn_reassignments": 1
+}

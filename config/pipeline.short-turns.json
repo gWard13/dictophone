@@ -1,0 +1,32 @@
+{
+  "threads": 4,
+  "asr": {
+    "model_dir": "../models/faster-whisper-small",
+    "beam_size": 5,
+    "vad_filter": false,
+    "speech_guided": true,
+    "context_pad_ms": 500,
+    "merge_gap_ms": 1500
+  },
+  "diarization": {
+    "segmentation_model": "../models/segmentation/model.onnx",
+    "embedding_model": "../models/embedding.onnx",
+    "threshold": 0.8,
+    "min_duration_on": 0.2,
+    "min_duration_off": 0.3,
+    "refine_short_turns": true,
+    "short_turn_max_ms": 3000,
+    "short_turn_reference_ms": 3500,
+    "short_turn_min_similarity": 0.6,
+    "short_turn_min_margin": 0.15
+  },
+  "llm": {
+    "model_path": "../models/llm/model.gguf",
+    "n_ctx": 2048,
+    "chat_format": "chatml"
+  },
+  "alignment": {
+    "pause_ms": 700,
+    "max_utterance_ms": 15000
+  }
+}

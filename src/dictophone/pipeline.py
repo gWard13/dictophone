@@ -19,6 +19,8 @@ def load_config(path: Path) -> dict:
     # Relative model paths are relative to the config, not to the shell directory.
     for section, keys in {"asr": ["model_dir"], "diarization": ["segmentation_model", "embedding_model"],
                           "llm": ["model_path"]}.items():
+        if section == "diarization" and "refinement_embedding_model" in cfg[section]:
+            keys = keys + ["refinement_embedding_model"]
         for key in keys:
             value = cfg[section][key]
             if not isinstance(value, str) or not value:
@@ -96,6 +98,7 @@ def run(source: Path, output: Path, cfg: dict, language: str = "ru",
     started = time.perf_counter()
     warnings: list[str] = []
     timings: dict[str, float] = {}
+    short_turn_changes = 0
     if source.resolve() == output.resolve():
         raise ValueError("Output must not overwrite source audio")
     # A pre-existing export is kept until a valid replacement is fully written.
@@ -110,6 +113,17 @@ def run(source: Path, output: Path, cfg: dict, language: str = "ru",
             try:
                 turns = backends.diarize(audio, duration, cfg["diarization"], cfg["threads"])
                 canonical_turns(turns, duration)  # validate within recoverable stage
+                if cfg["diarization"].get("refine_short_turns", False):
+                    try:
+                        turns, short_turn_changes = backends.refine_short_turns(audio, turns, cfg["diarization"], cfg["threads"])
+                    except MemoryError:
+                        raise
+                    except OSError as exc:
+                        if exc.errno in {12, 28}:
+                            raise
+                        warnings.append("short_turn_refinement_failed:original_diarization_preserved")
+                    except Exception:
+                        warnings.append("short_turn_refinement_failed:original_diarization_preserved")
             except (MemoryError, OSError) as exc:
                 if isinstance(exc, MemoryError) or (isinstance(exc, OSError) and exc.errno in {12, 28}):
                     raise
@@ -151,6 +165,7 @@ def run(source: Path, output: Path, cfg: dict, language: str = "ru",
                 "rtf": total / (duration / 1000), "stage_seconds": timings,
                 "utterances": len(rows), "speech_detected": bool(raw),
                 "llm_accepted_utterances": accepted, "warnings": warnings}
+    metadata["short_turn_reassignments"] = short_turn_changes
     if report:
         atomic_json(report, metadata)
     progress("complete")
