@@ -35,6 +35,39 @@ def interval_ok(start: int, end: int, duration: int) -> bool:
     return type(start) is int and type(end) is int and 0 <= start <= end <= duration
 
 
+def asr_windows(turns: list[Turn], duration_ms: int, pad_ms: int = 500,
+                merge_gap_ms: int = 1500) -> list[tuple[int, int]]:
+    """Group speech into context windows without overlapping decoded samples.
+
+    Consecutive turns of the same voice can share context. Overlapping voices
+    are kept in one window; separate windows never duplicate words by overlap.
+    An empty diarization falls back to the complete recording.
+    """
+    if type(pad_ms) is not int or type(merge_gap_ms) is not int or min(pad_ms, merge_gap_ms) < 0:
+        raise ValueError("Window padding and merge gap must be non-negative integers")
+    grouped: list[Turn] = []
+    for t in sorted(turns, key=lambda x: (x.start_ms, x.end_ms)):
+        if not interval_ok(t.start_ms, t.end_ms, duration_ms):
+            raise ValueError("Invalid speech interval")
+        if t.end_ms == t.start_ms:
+            continue
+        if grouped and (t.start_ms <= grouped[-1].end_ms or
+                        (t.speaker == grouped[-1].speaker and t.start_ms - grouped[-1].end_ms <= merge_gap_ms)):
+            p = grouped[-1]
+            grouped[-1] = Turn(p.start_ms, max(p.end_ms, t.end_ms),
+                                p.speaker if p.speaker == t.speaker else "overlap")
+        else:
+            grouped.append(t)
+    if not grouped:
+        return [(0, duration_ms)]
+    result = []
+    for i, t in enumerate(grouped):
+        left = (grouped[i-1].end_ms + t.start_ms) // 2 if i else 0
+        right = (t.end_ms + grouped[i+1].start_ms) // 2 if i+1 < len(grouped) else duration_ms
+        result.append((max(left, t.start_ms - pad_ms), min(right, t.end_ms + pad_ms)))
+    return result
+
+
 def normalized_words(text: str) -> list[str]:
     # Keep digits and word boundaries: no additions, deletions, substitutions or reorderings.
     return re.findall(r"[^\W_]+(?:[-’'][^\W_]+)*", text.casefold(), re.UNICODE)

@@ -105,18 +105,11 @@ def run(source: Path, output: Path, cfg: dict, language: str = "ru",
         audio, duration = backends.decode_mp3(source, Path(temporary) / "audio.f32")
         timings["decode"] = time.perf_counter() - t
         try:
-            progress("asr")
-            t = time.perf_counter()
-            words = backends.transcribe(audio, duration, cfg["asr"], language, cfg["threads"])
-            timings["asr"] = time.perf_counter() - t
-            gc.collect()
             progress("diarization")
             t = time.perf_counter()
             try:
                 turns = backends.diarize(audio, duration, cfg["diarization"], cfg["threads"])
                 canonical_turns(turns, duration)  # validate within recoverable stage
-                if words and not turns:
-                    warnings.append("diarization_empty:unknown_speakers")
             except (MemoryError, OSError) as exc:
                 if isinstance(exc, MemoryError) or (isinstance(exc, OSError) and exc.errno in {12, 28}):
                     raise
@@ -126,6 +119,13 @@ def run(source: Path, output: Path, cfg: dict, language: str = "ru",
                 turns = []
                 warnings.append("diarization_failed:unknown_speakers")
             timings["diarization"] = time.perf_counter() - t
+            gc.collect()
+            progress("asr")
+            t = time.perf_counter()
+            words = backends.transcribe(audio, duration, cfg["asr"], language, cfg["threads"], turns=turns)
+            timings["asr"] = time.perf_counter() - t
+            if words and not turns and not any(w.startswith("diarization_failed") for w in warnings):
+                warnings.append("diarization_empty:unknown_speakers")
         finally:
             # Explicit close required on Windows before TemporaryDirectory cleanup.
             audio._mmap.close()

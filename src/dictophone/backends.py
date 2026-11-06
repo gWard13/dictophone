@@ -6,7 +6,7 @@ import json
 import math
 from pathlib import Path
 
-from .core import Turn, Word, guarded_text
+from .core import Turn, Word, asr_windows, guarded_text
 
 SAMPLE_RATE = 16000
 
@@ -55,7 +55,8 @@ def decode_mp3(source: Path, pcm_path: Path):
     return audio, math.ceil(samples * 1000 / SAMPLE_RATE)
 
 
-def transcribe(audio, duration_ms: int, cfg: dict, language: str, threads: int) -> list[Word]:
+def transcribe(audio, duration_ms: int, cfg: dict, language: str, threads: int,
+               turns: list[Turn] | None = None) -> list[Word]:
     from faster_whisper import WhisperModel
 
     directory = Path(cfg["model_dir"]).resolve()
@@ -65,23 +66,26 @@ def transcribe(audio, duration_ms: int, cfg: dict, language: str, threads: int) 
                          cpu_threads=threads, local_files_only=True)
     words = []
     try:
-        segments, _ = model.transcribe(
-            audio, language=language, beam_size=cfg.get("beam_size", 5),
-            word_timestamps=True, vad_filter=cfg.get("vad_filter", False), condition_on_previous_text=False,
-            vad_parameters={"min_silence_duration_ms": 500},
-        )
-        for segment in segments:
-            items = segment.words or []
-            if segment.text.strip() and not items:
-                # Inventing uniform per-word times would break speaker alignment.
-                raise RuntimeError("ASR produced text without word timestamps")
-            for w in items:
-                if not math.isfinite(w.start) or not math.isfinite(w.end) or w.end < w.start:
-                    raise RuntimeError("ASR returned an invalid word timestamp")
-                a = min(duration_ms, max(0, round(w.start * 1000)))
-                b = min(duration_ms, max(a, round(w.end * 1000)))
-                if w.word.strip():
-                    words.append(Word(a, b, w.word.strip()))
+        windows = asr_windows(turns or [], duration_ms, cfg.get("context_pad_ms", 500),
+                              cfg.get("merge_gap_ms", 1500)) if cfg.get("speech_guided", False) else [(0, duration_ms)]
+        for start_ms, end_ms in windows:
+            segments, _ = model.transcribe(
+                audio[start_ms * 16:min(len(audio), end_ms * 16)],
+                language=language, beam_size=cfg.get("beam_size", 5),
+                word_timestamps=True, vad_filter=cfg.get("vad_filter", False), condition_on_previous_text=False,
+                vad_parameters={"min_silence_duration_ms": 500},
+            )
+            for segment in segments:
+                items = segment.words or []
+                if segment.text.strip() and not items:
+                    raise RuntimeError("ASR produced text without word timestamps")
+                for w in items:
+                    if not math.isfinite(w.start) or not math.isfinite(w.end) or w.end < w.start:
+                        raise RuntimeError("ASR returned an invalid word timestamp")
+                    a = min(end_ms, max(start_ms, start_ms + round(w.start * 1000)))
+                    b = min(end_ms, max(a, start_ms + round(w.end * 1000)))
+                    if w.word.strip():
+                        words.append(Word(a, b, w.word.strip()))
         return words
     finally:
         del model

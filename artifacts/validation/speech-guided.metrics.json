@@ -1,0 +1,20 @@
+{
+  "duration_ms": 60000,
+  "processing_seconds": 49.16454320000048,
+  "rtf": 0.8194090533333414,
+  "stage_seconds": {
+    "decode": 0.26270239999939804,
+    "diarization": 11.797936900002242,
+    "asr": 17.25578140000289,
+    "llm": 19.831614499998977
+  },
+  "utterances": 6,
+  "speech_detected": true,
+  "llm_accepted_utterances": 2,
+  "warnings": [
+    "llm_rejected_or_failed:utterance_2",
+    "llm_rejected_or_failed:utterance_4",
+    "llm_rejected_or_failed:utterance_5",
+    "llm_rejected_or_failed:utterance_6"
+  ]
+}
