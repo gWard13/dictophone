@@ -7,3 +7,5 @@
 - Формат экспорта описан в `../transcript.schema.json`.
 
 Настройки `*.local.json` не включаются в Git.
+
+Результаты профилей собраны в [TEST_RESULTS.md](../docs/TEST_RESULTS.md), ограничения — в [LIMITATIONS.md](../docs/LIMITATIONS.md). Основной пример настроек хранится только в этом каталоге.

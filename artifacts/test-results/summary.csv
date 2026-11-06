@@ -1,0 +1,11 @@
+scenario,profile,source_file,duration_ms,processing_seconds,rtf,utterances,detected_speakers,short_turn_reassignments,warnings_count,wer,der
+en,baseline,en.metrics.json,11000,8.250565799997275,0.7500514363633887,2,,,1,,
+podcast-monologue,baseline,podcast-monologue.metrics.json,60000,63.019786299999396,1.0503297716666566,5,,,1,,
+ru,baseline,ru.metrics.json,9240,6.645807199998671,0.7192432034630597,1,,,0,,
+short-turns,short-turns,short-turns.metrics.json,60000,56.936958800000866,0.9489493133333478,7,,1,2,,
+silence,baseline,silence.metrics.json,3000,3.9854903999985254,1.3284967999995085,0,,,0,,
+speech-guided,speech-guided,speech-guided.metrics.json,60000,49.16454320000048,0.8194090533333414,6,,,4,,
+four-speaker-public-sample,diarization-threshold-0.5,diarization-baseline.json,56861,,,,7,,,,
+four-speaker-public-sample,diarization-threshold-0.6,diarization-thresholds.json,,,,,4,,,,
+four-speaker-public-sample,diarization-threshold-0.7,diarization-thresholds.json,,,,,4,,,,
+four-speaker-public-sample,diarization-threshold-0.8,diarization-thresholds.json,,,,,4,,,,
