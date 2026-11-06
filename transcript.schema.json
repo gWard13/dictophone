@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dictophone transcript",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["transcript"],
+  "properties": {
+    "transcript": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["speaker_id", "start_ms", "end_ms", "text"],
+        "properties": {
+          "speaker_id": {"type": "string", "pattern": "^(speaker_[1-9][0-9]*|overlap|unknown)$"},
+          "start_ms": {"type": "integer", "minimum": 0},
+          "end_ms": {"type": "integer", "minimum": 0},
+          "text": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

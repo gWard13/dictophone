@@ -1,0 +1,17 @@
+[
+  {
+    "threshold": 0.6,
+    "speakers": 4,
+    "turns": 13
+  },
+  {
+    "threshold": 0.7,
+    "speakers": 4,
+    "turns": 13
+  },
+  {
+    "threshold": 0.8,
+    "speakers": 4,
+    "turns": 13
+  }
+]

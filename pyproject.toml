@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dictophone-pipeline"
+version = "0.1.0"
+description = "Offline MP3 transcription, diarization and guarded local LLM postprocessing"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy>=1.26,<3",
+  "av>=12,<17",
+  "faster-whisper>=1.1,<2",
+  "sherpa-onnx>=1.12,<2",
+]
+
+[project.optional-dependencies]
+llm = ["llama-cpp-python>=0.3,<0.4"]
+
+[project.scripts]
+dictophone = "dictophone.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

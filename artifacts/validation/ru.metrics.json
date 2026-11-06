@@ -1,0 +1,15 @@
+{
+  "duration_ms": 9240,
+  "processing_seconds": 6.645807199998671,
+  "rtf": 0.7192432034630597,
+  "stage_seconds": {
+    "decode": 0.24484579999989364,
+    "asr": 3.927443900000071,
+    "diarization": 0.5348114999978861,
+    "llm": 1.92073480000181
+  },
+  "utterances": 1,
+  "speech_detected": true,
+  "llm_accepted_utterances": 1,
+  "warnings": []
+}
