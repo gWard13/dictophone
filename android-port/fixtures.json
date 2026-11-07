@@ -1,0 +1,1194 @@
+{
+  "origin": "synthetic algorithm tests, not model transcripts",
+  "unicode_version": "14.0.0",
+  "cases": [
+    {
+      "id": "window-empty",
+      "operation": "windows",
+      "input": {
+        "turns": [],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          0,
+          5000
+        ]
+      ]
+    },
+    {
+      "id": "window-single",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          500,
+          2500
+        ]
+      ]
+    },
+    {
+      "id": "window-switch",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 2200,
+            "end_ms": 3000,
+            "speaker": "b"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          500,
+          2100
+        ],
+        [
+          2100,
+          3500
+        ]
+      ]
+    },
+    {
+      "id": "window-same-pause",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 2200,
+            "end_ms": 3000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          500,
+          3500
+        ]
+      ]
+    },
+    {
+      "id": "window-overlap",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 1500,
+            "end_ms": 3000,
+            "speaker": "b"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          500,
+          3500
+        ]
+      ]
+    },
+    {
+      "id": "window-zero",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 1000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          0,
+          5000
+        ]
+      ]
+    },
+    {
+      "id": "window-invalid",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 900,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "window-edges",
+      "operation": "windows",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 4500,
+            "end_ms": 5000,
+            "speaker": "b"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        [
+          0,
+          2500
+        ],
+        [
+          4000,
+          5000
+        ]
+      ]
+    },
+    {
+      "id": "align-empty",
+      "operation": "align",
+      "input": {
+        "words": [],
+        "turns": [],
+        "duration_ms": 5000
+      },
+      "expected": []
+    },
+    {
+      "id": "align-merge",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1100,
+            "end_ms": 1300,
+            "text": "Привет"
+          },
+          {
+            "start_ms": 1400,
+            "end_ms": 1600,
+            "text": "друг"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 1100,
+          "end_ms": 1600,
+          "text": "Привет друг"
+        }
+      ]
+    },
+    {
+      "id": "align-switch",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1100,
+            "end_ms": 1300,
+            "text": "Да"
+          },
+          {
+            "start_ms": 2300,
+            "end_ms": 2600,
+            "text": "Нет"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 2200,
+            "end_ms": 3000,
+            "speaker": "b"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 1100,
+          "end_ms": 1300,
+          "text": "Да"
+        },
+        {
+          "speaker_id": "speaker_2",
+          "start_ms": 2300,
+          "end_ms": 2600,
+          "text": "Нет"
+        }
+      ]
+    },
+    {
+      "id": "align-overlap",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1700,
+            "end_ms": 1900,
+            "text": "Да"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 1500,
+            "end_ms": 2500,
+            "speaker": "b"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "overlap",
+          "start_ms": 1700,
+          "end_ms": 1900,
+          "text": "Да"
+        }
+      ]
+    },
+    {
+      "id": "align-unknown",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 4000,
+            "end_ms": 4200,
+            "text": "Да"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "unknown",
+          "start_ms": 4000,
+          "end_ms": 4200,
+          "text": "Да"
+        }
+      ]
+    },
+    {
+      "id": "align-duplicate",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1700,
+            "end_ms": 1900,
+            "text": "Да"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 1500,
+            "end_ms": 2500,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 1700,
+          "end_ms": 1900,
+          "text": "Да"
+        }
+      ]
+    },
+    {
+      "id": "align-zero-word",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1200,
+            "end_ms": 1200,
+            "text": "Да"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 1000,
+            "end_ms": 2000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 1200,
+          "end_ms": 1200,
+          "text": "Да"
+        }
+      ]
+    },
+    {
+      "id": "align-long-pause",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1100,
+            "end_ms": 1200,
+            "text": "Да"
+          },
+          {
+            "start_ms": 2300,
+            "end_ms": 2400,
+            "text": "Нет"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 1100,
+          "end_ms": 1200,
+          "text": "Да"
+        },
+        {
+          "speaker_id": "speaker_1",
+          "start_ms": 2300,
+          "end_ms": 2400,
+          "text": "Нет"
+        }
+      ]
+    },
+    {
+      "id": "align-invalid",
+      "operation": "align",
+      "input": {
+        "words": [
+          {
+            "start_ms": 1000,
+            "end_ms": 500,
+            "text": "Да"
+          }
+        ],
+        "turns": [],
+        "duration_ms": 5000
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "normalize-0",
+      "operation": "normalize",
+      "input": {
+        "text": "Привет, мир!"
+      },
+      "expected": [
+        "привет",
+        "мир"
+      ]
+    },
+    {
+      "id": "normalize-1",
+      "operation": "normalize",
+      "input": {
+        "text": "Straße STRASSE"
+      },
+      "expected": [
+        "strasse",
+        "strasse"
+      ]
+    },
+    {
+      "id": "normalize-2",
+      "operation": "normalize",
+      "input": {
+        "text": "Σ σ ς"
+      },
+      "expected": [
+        "σ",
+        "σ",
+        "σ"
+      ]
+    },
+    {
+      "id": "normalize-3",
+      "operation": "normalize",
+      "input": {
+        "text": "İ I ı"
+      },
+      "expected": [
+        "i",
+        "i",
+        "ı"
+      ]
+    },
+    {
+      "id": "normalize-4",
+      "operation": "normalize",
+      "input": {
+        "text": "по-русски isn’t don't"
+      },
+      "expected": [
+        "по-русски",
+        "isn’t",
+        "don't"
+      ]
+    },
+    {
+      "id": "normalize-5",
+      "operation": "normalize",
+      "input": {
+        "text": "Ёж ёж 12,5"
+      },
+      "expected": [
+        "ёж",
+        "ёж",
+        "12",
+        "5"
+      ]
+    },
+    {
+      "id": "normalize-6",
+      "operation": "normalize",
+      "input": {
+        "text": "a_b a—b"
+      },
+      "expected": [
+        "a",
+        "b",
+        "a",
+        "b"
+      ]
+    },
+    {
+      "id": "normalize-7",
+      "operation": "normalize",
+      "input": {
+        "text": "𐐀𐐨 ½ ²"
+      },
+      "expected": [
+        "𐐨𐐨",
+        "½",
+        "²"
+      ]
+    },
+    {
+      "id": "normalize-8",
+      "operation": "normalize",
+      "input": {
+        "text": "текст ещё"
+      },
+      "expected": [
+        "текст",
+        "ещё"
+      ]
+    },
+    {
+      "id": "normalize-9",
+      "operation": "normalize",
+      "input": {
+        "text": "áb"
+      },
+      "expected": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "id": "guard-0",
+      "operation": "guard",
+      "input": {
+        "original": "привет как дела",
+        "candidate": "Привет! Как дела?"
+      },
+      "expected": "Привет! Как дела?"
+    },
+    {
+      "id": "guard-1",
+      "operation": "guard",
+      "input": {
+        "original": "Straße",
+        "candidate": "STRASSE"
+      },
+      "expected": "STRASSE"
+    },
+    {
+      "id": "guard-2",
+      "operation": "guard",
+      "input": {
+        "original": "Σ",
+        "candidate": "ς"
+      },
+      "expected": "ς"
+    },
+    {
+      "id": "guard-3",
+      "operation": "guard",
+      "input": {
+        "original": "привет",
+        "candidate": "Привет друг"
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-4",
+      "operation": "guard",
+      "input": {
+        "original": "два слова",
+        "candidate": "слова два"
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-5",
+      "operation": "guard",
+      "input": {
+        "original": "число 12",
+        "candidate": "число 13"
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-6",
+      "operation": "guard",
+      "input": {
+        "original": "да",
+        "candidate": "да <>"
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-7",
+      "operation": "guard",
+      "input": {
+        "original": "да",
+        "candidate": ""
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-8",
+      "operation": "guard",
+      "input": {
+        "original": "да",
+        "candidate": null
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-9",
+      "operation": "guard",
+      "input": {
+        "original": "да нет",
+        "candidate": " Да\tнет! "
+      },
+      "expected": "Да нет!"
+    },
+    {
+      "id": "guard-10",
+      "operation": "guard",
+      "input": {
+        "original": "да",
+        "candidate": "да...................................................................................................."
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-11",
+      "operation": "guard",
+      "input": {
+        "original": "по-русски",
+        "candidate": "по русски"
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "guard-12",
+      "operation": "guard",
+      "input": {
+        "original": "𐐀",
+        "candidate": "𐐨"
+      },
+      "expected": "𐐨"
+    },
+    {
+      "id": "choose-0",
+      "operation": "choose",
+      "input": {
+        "word": {
+          "start_ms": 400,
+          "end_ms": 700,
+          "text": "да"
+        },
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 500,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 500,
+            "end_ms": 1000,
+            "speaker": "b"
+          }
+        ]
+      },
+      "expected": "b"
+    },
+    {
+      "id": "choose-1",
+      "operation": "choose",
+      "input": {
+        "word": {
+          "start_ms": 400,
+          "end_ms": 700,
+          "text": "да"
+        },
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 1000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 300,
+            "end_ms": 800,
+            "speaker": "b"
+          }
+        ]
+      },
+      "expected": "overlap"
+    },
+    {
+      "id": "choose-2",
+      "operation": "choose",
+      "input": {
+        "word": {
+          "start_ms": 400,
+          "end_ms": 700,
+          "text": "да"
+        },
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 1000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 300,
+            "end_ms": 800,
+            "speaker": "a"
+          }
+        ]
+      },
+      "expected": "a"
+    },
+    {
+      "id": "choose-3",
+      "operation": "choose",
+      "input": {
+        "word": {
+          "start_ms": 400,
+          "end_ms": 700,
+          "text": "да"
+        },
+        "turns": []
+      },
+      "expected": "unknown"
+    },
+    {
+      "id": "choose-4",
+      "operation": "choose",
+      "input": {
+        "word": {
+          "start_ms": 400,
+          "end_ms": 600,
+          "text": "да"
+        },
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 500,
+            "speaker": "speaker_2"
+          },
+          {
+            "start_ms": 500,
+            "end_ms": 1000,
+            "speaker": "speaker_10"
+          }
+        ]
+      },
+      "expected": "speaker_10"
+    },
+    {
+      "id": "refine-0",
+      "operation": "refine",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "embeddings": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      "expected": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "a"
+          }
+        ],
+        "changes": 1
+      }
+    },
+    {
+      "id": "refine-1",
+      "operation": "refine",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "embeddings": [
+          [
+            1,
+            0
+          ],
+          [
+            0.99,
+            0.01
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      "expected": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "changes": 0
+      }
+    },
+    {
+      "id": "refine-2",
+      "operation": "refine",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "embeddings": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          null
+        ]
+      },
+      "expected": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "changes": 0
+      }
+    },
+    {
+      "id": "refine-3",
+      "operation": "refine",
+      "input": {
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 5000,
+            "speaker": "a"
+          },
+          {
+            "start_ms": 6000,
+            "end_ms": 11000,
+            "speaker": "b"
+          },
+          {
+            "start_ms": 12000,
+            "end_ms": 13000,
+            "speaker": "b"
+          }
+        ],
+        "embeddings": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "export-0",
+      "operation": "export",
+      "input": {
+        "rows": [],
+        "duration_ms": 1000
+      },
+      "expected": "{\n  \"transcript\": []\n}\n"
+    },
+    {
+      "id": "export-1",
+      "operation": "export",
+      "input": {
+        "rows": [
+          {
+            "speaker_id": "speaker_1",
+            "start_ms": 0,
+            "end_ms": 1000,
+            "text": "Он сказал: \"Да\".\nДалее. 😀"
+          }
+        ],
+        "duration_ms": 1000
+      },
+      "expected": "{\n  \"transcript\": [\n    {\n      \"speaker_id\": \"speaker_1\",\n      \"start_ms\": 0,\n      \"end_ms\": 1000,\n      \"text\": \"Он сказал: \\\"Да\\\".\\nДалее. 😀\"\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "export-2",
+      "operation": "export",
+      "input": {
+        "rows": [
+          {
+            "speaker_id": "unknown",
+            "start_ms": 0,
+            "end_ms": 0,
+            "text": "\u0001\tда"
+          }
+        ],
+        "duration_ms": 1000
+      },
+      "expected": "{\n  \"transcript\": [\n    {\n      \"speaker_id\": \"unknown\",\n      \"start_ms\": 0,\n      \"end_ms\": 0,\n      \"text\": \"\\u0001\\tда\"\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "export-3",
+      "operation": "export",
+      "input": {
+        "rows": [
+          {
+            "speaker_id": "bad",
+            "start_ms": 0,
+            "end_ms": 100,
+            "text": "да"
+          }
+        ],
+        "duration_ms": 1000
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "id": "missing-0",
+      "operation": "missing",
+      "input": {
+        "words": [],
+        "turns": [],
+        "duration_ms": 5000
+      },
+      "expected": []
+    },
+    {
+      "id": "missing-1",
+      "operation": "missing",
+      "input": {
+        "words": [],
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 1000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "start_ms": 0,
+          "end_ms": 1000,
+          "text": "[Неразборчиво]"
+        }
+      ]
+    },
+    {
+      "id": "missing-2",
+      "operation": "missing",
+      "input": {
+        "words": [
+          {
+            "start_ms": 100,
+            "end_ms": 200,
+            "text": "да"
+          }
+        ],
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 1000,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": [
+        {
+          "start_ms": 100,
+          "end_ms": 200,
+          "text": "да"
+        }
+      ]
+    },
+    {
+      "id": "missing-3",
+      "operation": "missing",
+      "input": {
+        "words": [],
+        "turns": [
+          {
+            "start_ms": 0,
+            "end_ms": 199,
+            "speaker": "a"
+          }
+        ],
+        "duration_ms": 5000
+      },
+      "expected": []
+    },
+    {
+      "id": "pipeline-native-contract",
+      "operation": "native_interface_simulation",
+      "input": {
+        "description": "Synthetic adapters, no actual speech models"
+      },
+      "expected": {
+        "rows": [
+          {
+            "speaker_id": "speaker_1",
+            "start_ms": 100,
+            "end_ms": 400,
+            "text": "Привет!"
+          },
+          {
+            "speaker_id": "speaker_2",
+            "start_ms": 1200,
+            "end_ms": 1500,
+            "text": "Привет!"
+          }
+        ],
+        "accepted": 2,
+        "warnings": [],
+        "order": [
+          "diarizer_open",
+          "diarizer_close",
+          "asr_open",
+          "asr_close",
+          "llm_open",
+          "llm_close"
+        ]
+      }
+    }
+  ]
+}

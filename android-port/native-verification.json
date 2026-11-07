@@ -1,0 +1,59 @@
+{
+  "runtime_version": "whisper.cpp version: 1.9.5",
+  "measurement": "wall time includes model load, ASR and native JSON export; PeakWorkingSet sampled from own Windows child process",
+  "runs": [
+    {
+      "model": "ggml-small-q5_1.bin",
+      "sample": "en_public_short",
+      "duration_ms": 11000,
+      "processing_seconds": 11.824476800000411,
+      "rtf": 1.0749524363636738,
+      "peak_working_set_bytes": 504631296,
+      "nonempty_word_segments": 22,
+      "invalid_time_intervals": 0,
+      "platform": "Windows x64 CPU, 4 threads, one run; NOT Android",
+      "wer": null,
+      "der": null
+    },
+    {
+      "model": "ggml-small-q5_1.bin",
+      "sample": "ru_public_short",
+      "duration_ms": 9240,
+      "processing_seconds": 10.308526900000288,
+      "rtf": 1.1156414393939706,
+      "peak_working_set_bytes": 504209408,
+      "nonempty_word_segments": 3,
+      "invalid_time_intervals": 0,
+      "platform": "Windows x64 CPU, 4 threads, one run; NOT Android",
+      "wer": null,
+      "der": null
+    },
+    {
+      "model": "ggml-small.bin",
+      "sample": "en_public_short",
+      "duration_ms": 11000,
+      "processing_seconds": 8.833849200003897,
+      "rtf": 0.8030772000003542,
+      "peak_working_set_bytes": 806780928,
+      "nonempty_word_segments": 22,
+      "invalid_time_intervals": 0,
+      "platform": "Windows x64 CPU, 4 threads, one run; NOT Android",
+      "wer": null,
+      "der": null
+    },
+    {
+      "model": "ggml-small.bin",
+      "sample": "ru_public_short",
+      "duration_ms": 9240,
+      "processing_seconds": 7.639394300000276,
+      "rtf": 0.8267742748918048,
+      "peak_working_set_bytes": 804716544,
+      "nonempty_word_segments": 3,
+      "invalid_time_intervals": 0,
+      "platform": "Windows x64 CPU, 4 threads, one run; NOT Android",
+      "wer": null,
+      "der": null
+    }
+  ],
+  "android_measured": false
+}

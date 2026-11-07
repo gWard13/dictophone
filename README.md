@@ -123,6 +123,8 @@ Copy-Item config/pipeline.example.json config/pipeline.local.json
 
 ## Документация
 
+Подготовлен [комплект переноса](android-port/parameters.json) под заявленный эмулятор Pixel 10 / API 37 / 4 ГБ: Kotlin-логика, контрольные примеры, манифест готовых весов и результаты проверок. Это ещё не Android-приложение: реальные JNI-адаптеры и ABI эмулятора не проверены. Подробности — в [архитектуре](docs/ARCHITECTURE.md#перенос-в-kotlin-и-подготовка-весов).
+
 - [Архитектура и модели](docs/ARCHITECTURE.md)
 - [Ограничения и нерешённые ошибки](docs/LIMITATIONS.md)
 - [Формат входа, выхода и промежуточных данных](docs/PROTOCOL.md)

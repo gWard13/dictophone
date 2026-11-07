@@ -1,0 +1,37 @@
+{
+  "source": "actual native model loader diagnostics",
+  "models": {
+    "ggml-small-q5_1": {
+      "n_vocab": 51865,
+      "n_audio_ctx": 1500,
+      "n_audio_state": 768,
+      "n_audio_head": 12,
+      "n_audio_layer": 12,
+      "n_text_ctx": 448,
+      "n_text_state": 768,
+      "n_text_head": 12,
+      "n_text_layer": 12,
+      "n_mels": 80,
+      "ftype": 9,
+      "qntvr": 1,
+      "type": 3,
+      "n_langs": 99
+    },
+    "ggml-small": {
+      "n_vocab": 51865,
+      "n_audio_ctx": 1500,
+      "n_audio_state": 768,
+      "n_audio_head": 12,
+      "n_audio_layer": 12,
+      "n_text_ctx": 448,
+      "n_text_state": 768,
+      "n_text_head": 12,
+      "n_text_layer": 12,
+      "n_mels": 80,
+      "ftype": 1,
+      "qntvr": 0,
+      "type": 3,
+      "n_langs": 99
+    }
+  }
+}

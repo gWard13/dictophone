@@ -1,0 +1,13 @@
+{
+  "scope": "pure Kotlin JVM17 versus Python reference; NOT Android execution",
+  "fixtures": 58,
+  "passed": 58,
+  "failed": [],
+  "unicode_version": "14.0.0",
+  "source_sha256": {
+    "AudioPipeline.kt": "41bbc64f32752bdbe7d4a3bfbc77772f2e6edf8b613f7bb3175a05586d4e0a14",
+    "AudioPipelineLogic.kt": "e658a416556a9a2d06f0fb8f5a158c7ea0d229e93bb64c008759636ea56190f4",
+    "UnicodeCompat.kt": "0f4c15b984097c9c24e9980f85ab4a384d9b800c53bc9b5d8210a24741f639ef"
+  },
+  "native_inference_on_android_tested": false
+}

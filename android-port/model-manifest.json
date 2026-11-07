@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "whisper_source_revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+  "preparation": "publisher-preconverted GGML downloaded and checksummed; no CTranslate2 conversion or training performed",
+  "default_stt": "whisper-small-q5_1",
+  "models": [
+    {
+      "id": "whisper-small-q5_1",
+      "format": "GGML Q5_1",
+      "file": "weights/ggml-small-q5_1.bin",
+      "bytes": 190085487,
+      "sha256": "ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb",
+      "included_in_default_bundle": true,
+      "source_url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-small-q5_1.bin",
+      "training_performed_by_this_project": false,
+      "android_load_verified": false
+    },
+    {
+      "id": "whisper-small-f16",
+      "format": "GGML F16",
+      "file": "weights/ggml-small.bin",
+      "bytes": 487601967,
+      "sha256": "1be3a9b2063867b937e64e2ec7483364a79917e157fa98c5d94b5c1fffea987b",
+      "included_in_default_bundle": false,
+      "source_url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-small.bin",
+      "training_performed_by_this_project": false,
+      "android_load_verified": false
+    },
+    {
+      "id": "speaker-segmentation",
+      "format": "ONNX",
+      "file": "weights/segmentation.onnx",
+      "bytes": 5992913,
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+      "included_in_default_bundle": true,
+      "source_url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "training_performed_by_this_project": false,
+      "android_load_verified": false
+    },
+    {
+      "id": "speaker-embedding",
+      "format": "ONNX",
+      "file": "weights/embedding.onnx",
+      "bytes": 39593761,
+      "sha256": "1a331345f04805badbb495c775a6ddffcdd1a732567d5ec8b3d5749e3c7a5e4b",
+      "included_in_default_bundle": true,
+      "source_url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+      "training_performed_by_this_project": false,
+      "android_load_verified": false
+    },
+    {
+      "id": "qwen-0.5b-instruct",
+      "format": "GGUF Q4_K_M",
+      "file": "weights/llm.gguf",
+      "bytes": 491400032,
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+      "included_in_default_bundle": true,
+      "source_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "training_performed_by_this_project": false,
+      "android_load_verified": false
+    }
+  ],
+  "native_smoke_runtime": {
+    "release_tag": "b5454",
+    "reported_version": "whisper.cpp version: 1.9.5",
+    "platform": "Windows x64, CPU, 4 threads, not Android"
+  },
+  "toolchain": {
+    "kotlin": "v2.4.21",
+    "jvm_target": 17,
+    "unicode": "Python Unicode 14.0.0"
+  },
+  "default_bundle_bytes": 727072193
+}
